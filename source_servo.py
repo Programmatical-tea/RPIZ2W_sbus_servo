@@ -1,7 +1,9 @@
 # Set Pin Factory to pigpio https://gpiozero.readthedocs.io/en/stable/api_pins.html#changing-the-pin-factory
 from gpiozero.pins.pigpio import PiGPIOFactory
-from gpiozero import Device, Servo
-from gpiozero.tools import scaled_half
+from gpiozero import Device, AngularServo
+from gpiozero.tools import scaled
+from signal import pause
+
 Device.pin_factory = PiGPIOFactory()
 
 ##### Taken from gpiozero source #####
@@ -38,8 +40,11 @@ def sin_values(period=360):
         yield sin(a)
 ##### End #####
 
-servo = Servo(12, min_angle=-40, max_angle=40, min_pulse_width=0.0009, max_pulse_width=0.0019)
+servo = AngularServo(12,min_angle=-40, max_angle=40, min_pulse_width=0.0009, max_pulse_width=0.0019)
+print("The initialization worked")
+servo.source_delay = 0.01
+print("There is a source for the Angular Servo")
+servo.source = scaled(sin_values(), -0.5, 0.5, -1, 1)
+print("The Function is correct")
 
-servo.source_delay = 0.1
-servo.source = sin_values()
-
+pause()
