@@ -3,6 +3,13 @@
 import zmq
 import time
 
+# Set Pin Factory to pigpio https://gpiozero.readthedocs.io/en/stable/api_pins.html#changing-the-pin-factory
+from gpiozero.pins.pigpio import PiGPIOFactory
+from gpiozero import Device, AngularServo
+Device.pin_factory = PiGPIOFactory()
+
+
+# Starting zmq Context, to read SBUS data from the Service Daemon
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
 socket.connect("tcp://localhost:5555")
@@ -10,6 +17,8 @@ socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
 print("Starting SBUS subscription...")
 time.sleep(0.5)
 
+
+# Interpret the RF 'channel' list input
 def map_2_range(value, old_min=200, old_max=1800, new_min=-10, new_max=10):
     if value < old_min or value > old_max:
         print(f"Value = {value}")
@@ -30,7 +39,7 @@ def channels_2_dir(old_channels):
     print(f"SwitchOn={LeftSwitch}")
     return channels
     
-
+# Parse packet into coherent 'channel' list
 def parsePacket(packet):
     channel = [-1] * 18
     channel[0] = (packet[2] << 8 & 0b0111_0000_0000) | packet[1]
@@ -57,6 +66,10 @@ def parsePacket(packet):
     
     return channel, frame_lost, failsafe
 
+# Move Servo continuously, Only updating the Amplitude.
+def setServoState(active, amplitude):
+    pass
+
 while True:
     latest_packet = None
 
@@ -76,8 +89,16 @@ while True:
         else:
             print("Transmitter Connected")
         
+
+        ### Main Loop Function Start ###
+
+
         channels_2_dir(channels)
         #print(f"Channels: {channels}")
+
+
+
+        ### Main Loop Function End ###
     
     else:
         print("Turn the Transmitter on and check the Receiver connection!")
