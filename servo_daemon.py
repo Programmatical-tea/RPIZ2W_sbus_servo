@@ -70,7 +70,7 @@ class Servo1:
     def __init__(self):
         self.A = 0
         self.B = 0
-        self.period = 360
+        self.period = 120
         self.servo1 = AngularServo(SERVO_GPIO_PIN_1,min_angle=-40, max_angle=40, min_pulse_width=0.0009, max_pulse_width=0.0019)
         self.servo1.source_delay = 0.01
         self.servo1.source = self.sin_values()
@@ -135,6 +135,7 @@ class Servo1:
                 else:
                     self.A = self.channels[0]/10
                     self.B = self.channels[1]/10
+                    sleep(1)
 
     def start(self):
         self.thread.start()
