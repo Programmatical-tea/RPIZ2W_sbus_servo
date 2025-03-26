@@ -97,7 +97,6 @@ class Servo1:
     def update(self):
 
         while self.running:
-            sleep(1)
             while True:
                 try:
                     self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
