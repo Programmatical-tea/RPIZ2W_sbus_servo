@@ -86,6 +86,7 @@ class Servo1:
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")
         print("Starting SBUS subscription...")
         self.latest_rfpacket = None
+        sleep(0.5)
 
         self.running = True
         self.thread = threading.Thread(target=self.update, daemon=True)
@@ -105,7 +106,7 @@ class Servo1:
 
             while True:
                 try:
-                    self.latest_rfpacket = self.rf_socket.recv_pyobj()
+                    self.latest_rfpacket = self.rf_socket.recv_pyobj(flags=zmq.NOBLOCK)
                 except zmq.Again:
                     #print("This is Again2")
                     break
