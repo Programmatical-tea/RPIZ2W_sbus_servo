@@ -28,9 +28,9 @@ class Servo1:
         self.socket = self.context.socket(zmq.SUB)
         self.socket.connect("tcp://127.0.0.1:7777")
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
+        self.latest_packet = (0,0)
 
     def update(self):
-
         while True:
             try:
                 self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
