@@ -3,7 +3,7 @@ import time
 
 context = zmq.Context()
 socket = context.socket(zmq.PUB)  # Use PUSH to send messages
-socket.bind("tcp://127.0.0.1:7777")  # Bind to a port
+socket.bind("tcp://*:7777")
 
 a = 0
 b = 0

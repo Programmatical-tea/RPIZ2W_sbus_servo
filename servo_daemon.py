@@ -14,6 +14,7 @@ from math import sin, cos, pi, isclose
 from statistics import mean
 
 import zmq
+import threading
 
 SERVO_GPIO_PIN_1 = 12
 
@@ -24,25 +25,36 @@ class Servo1:
         self.B = 0
         self.period = 360
         self.servo1 = AngularServo(SERVO_GPIO_PIN_1,min_angle=-40, max_angle=40, min_pulse_width=0.0009, max_pulse_width=0.0019)
-        self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.SUB)
-        self.socket.connect("tcp://127.0.0.1:7777")
-        self.socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
-        self.latest_packet = (0,0)
-
-    def update(self):
-        while True:
-            try:
-                self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
-            except zmq.Again:
-                break
-        self.A = self.latest_packet[0]
-        self.B = self.latest_packet[1]
-        print(f"updated value to {self.A}, {self.B}")
-        
-    def start(self):
         self.servo1.source_delay = 0.01
         self.servo1.source = self.sin_values()
+
+        self.context = zmq.Context()
+        self.socket = self.context.socket(zmq.SUB)
+        self.socket.connect("tcp://localhost:7777")
+        self.socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
+        self.latest_packet = (0,0)
+        self.running = True
+        self.thread = threading.Thread(target=self.update, daemon=True)
+        
+
+    def update(self):
+        while self.running:
+            while True:
+                try:
+                    self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
+                except zmq.Again:
+                    break
+            self.A = self.latest_packet[0]
+            self.B = self.latest_packet[1]
+            print(f"updated value to {self.A}, {self.B}")
+            sleep(1)
+
+    def start(self):
+        self.thread.start()
+
+    def stop(self):
+        self.running = False
+        self.thread.join()
 
     def sin_values(self):
         angles = (2 * pi * i / self.period for i in range(self.period))
@@ -54,6 +66,6 @@ class Servo1:
 servo1 = Servo1()
 servo1.start()
 
-while True:
-    servo1.update()
+input("Stop?")
 
+servo1.stop()
