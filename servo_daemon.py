@@ -106,12 +106,14 @@ class Servo1:
             while True:
                 try:
                     self.latest_rfpacket = self.rf_socket.recv_pyobj(flags=zmq.NOBLOCK)
+                    print(self.latest_rfpacket)
                 except zmq.Again:
                     #print("This is Again2")
                     break
             #print("new try")
-            print(self.latest_packet)
-            print(self.latest_rfpacket)
+            print(self.latest_packet) # this works
+            print(self.latest_rfpacket) # Not this.
+
             if self.latest_rfpacket is not None:
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
                 print("Trasmit input")
