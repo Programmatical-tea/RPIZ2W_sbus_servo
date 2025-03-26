@@ -83,9 +83,9 @@ class Servo1:
 
         self.rf_socket = self.context.socket(zmq.SUB)
         self.rf_socket.connect("tcp://localhost:5555")
-        self.socket.setsockopt_string(zmq.SUBSCRIBE, "")
+        self.rf_socket.setsockopt_string(zmq.SUBSCRIBE, "")
         print("Starting SBUS subscription...")
-        self.latest_rfpacket = None
+        self.latest_rfpacket = [0]*26
         sleep(0.5)
 
         self.running = True
@@ -111,8 +111,8 @@ class Servo1:
                     #print("This is Again2")
                     break
             #print("new try")
-            print(self.latest_packet) # this works
-            print(self.latest_rfpacket) # Not this.
+            #print(self.latest_packet) # this works
+            #print(self.latest_rfpacket) # Not this.
 
             if self.latest_rfpacket is not None:
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
