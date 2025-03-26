@@ -126,7 +126,7 @@ class Servo1:
                     #print("Transmitter Connected")
 
                 self.channels = channels_2_dir(channels)
-                print(self.channels[2])
+                #print(self.channels[2])
                 if self.channels[2] > 0:
                     if self.latest_packet is not None:
                         self.A = self.latest_packet[0]
