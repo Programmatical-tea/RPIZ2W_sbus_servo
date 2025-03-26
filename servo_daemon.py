@@ -33,9 +33,9 @@ def channels_2_dir(old_channels):
     RightVert = channels[1]
     RightHori = channels[0]
     LeftSwitch = channels[6]
-    print(f"LeftVert={LeftVert}, LeftHori={LeftHori}")
-    print(f"RightVert={RightVert}, RightHori={RightHori}")
-    print(f"SwitchOn={LeftSwitch}")
+    #print(f"LeftVert={LeftVert}, LeftHori={LeftHori}")
+    #print(f"RightVert={RightVert}, RightHori={RightHori}")
+    #print(f"SwitchOn={LeftSwitch}")
     return LeftVert, RightHori, LeftSwitch
     
 # Parse packet into coherent 'channel' list
