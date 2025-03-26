@@ -99,14 +99,14 @@ class Servo1:
         while self.running:
             while True:
                 try:
-                    self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
+                    self.latest_packet = self.socket.recv_pyobj()
                 except zmq.Again:
-                    print("This is Again")
+                    #print("This is Again")
                     break
 
             while True:
                 try:
-                    self.latest_rfpacket = self.rf_socket.recv_pyobj(flags=zmq.NOBLOCK)
+                    self.latest_rfpacket = self.rf_socket.recv_pyobj()
                 except zmq.Again:
                     print("This is Again2")
                     break
