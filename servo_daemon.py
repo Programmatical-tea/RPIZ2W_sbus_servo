@@ -81,7 +81,8 @@ class Servo1:
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
         self.latest_packet = (0,0)
 
-        self.rf_socket = self.context.socket(zmq.SUB)
+        self.rfcontext = zmq.Context()
+        self.rf_socket = self.rfcontext.socket(zmq.SUB)
         self.rf_socket.connect("tcp://localhost:5555")
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")
         print("Starting SBUS subscription...")
