@@ -135,7 +135,7 @@ class Servo1:
                 else:
                     self.A = self.channels[0]/10
                     self.B = self.channels[1]/10
-                    sleep(1)
+                    sleep(0.01)
 
     def start(self):
         self.thread.start()
