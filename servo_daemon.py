@@ -24,7 +24,7 @@ class Servo1:
         self.B = 0
         self.period = 360
         self.servo1 = AngularServo(SERVO_GPIO_PIN_1,min_angle=-40, max_angle=40, min_pulse_width=0.0009, max_pulse_width=0.0019)
-        self.context = zmq.context()
+        self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PULL)
         self.socket.connect("tcp://127.0.0.1:7777")
 
