@@ -81,8 +81,7 @@ class Servo1:
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
         self.latest_packet = (0,0)
 
-        self.rfcontext = zmq.Context()
-        self.rf_socket = self.rfcontext.socket(zmq.SUB)
+        self.rf_socket = self.context.socket(zmq.SUB)
         self.rf_socket.connect("tcp://localhost:5555")
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")
         print("Starting SBUS subscription...")
@@ -99,19 +98,19 @@ class Servo1:
         while self.running:
             while True:
                 try:
-                    self.latest_packet = self.socket.recv_pyobj()
+                    self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
                 except zmq.Again:
                     #print("This is Again")
                     break
 
             while True:
                 try:
-                    self.latest_rfpacket = self.rf_socket.recv_pyobj()
+                    self.latest_rfpacket = self.rf_socket.recv_pyobj(flags=zmq.NOBLOCK)
                 except zmq.Again:
-                    print("This is Again2")
+                    #print("This is Again2")
                     break
-            print("new try")
-            
+            #print("new try")
+            print(self.latest_packet)
             print(self.latest_rfpacket)
             if self.latest_rfpacket is not None:
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
