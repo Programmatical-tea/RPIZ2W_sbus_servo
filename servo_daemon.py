@@ -36,7 +36,7 @@ class Servo1:
         
     def start(self):
         self.servo1.source_delay = 0.01
-        self.servo1.source = scaled(self.sin_values())
+        self.servo1.source = self.sin_values()
 
     def sin_values(self):
         angles = (2 * pi * i / self.period for i in range(self.period))
