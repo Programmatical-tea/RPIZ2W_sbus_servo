@@ -105,7 +105,7 @@ class Servo1:
             
             if self.latest_rfpacket is not None:
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
-            
+                print("Trasmit input")
                 if failsafe:
                     print("Transmitter Connection LOST - Failsafe Activated!")
                 elif frame_lost:
@@ -114,7 +114,7 @@ class Servo1:
                     print("Transmitter Connected")
 
                 self.channels = channels_2_dir(channels)
-
+                print(self.channels[2])
                 if self.channels[2] > 0:
                     if self.latest_packet is not None:
                         self.A = self.latest_packet[0]
