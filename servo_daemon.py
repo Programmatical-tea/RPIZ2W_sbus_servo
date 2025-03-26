@@ -25,14 +25,20 @@ class Servo1:
         self.period = 360
         self.servo1 = AngularServo(SERVO_GPIO_PIN_1,min_angle=-40, max_angle=40, min_pulse_width=0.0009, max_pulse_width=0.0019)
         self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.PULL)
+        self.socket = self.context.socket(zmq.SUB)
         self.socket.connect("tcp://127.0.0.1:7777")
+        self.socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
 
     def update(self):
-        self.message = self.socket.recv_string()
-        if "A=" in self.message and "B=" in self.message:
-            self.A = float(self.message.split("A")[1])
-            self.B = float(self.message.split("B")[1])
+
+        while True:
+            try:
+                self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
+            except zmq.Again:
+                break
+        self.A = self.latest_packet[0]
+        self.B = self.latest_packet[1]
+        print(f"updated value to {self.A}, {self.B}")
         
     def start(self):
         self.servo1.source_delay = 0.01
