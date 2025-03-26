@@ -106,6 +106,7 @@ class Servo1:
                 except zmq.Again:
                     break
             
+            print(self.latest_rfpacket)
             if self.latest_rfpacket is not None:
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
                 print("Trasmit input")
