@@ -101,11 +101,17 @@ class Servo1:
             while True:
                 try:
                     self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
-                    self.latest_rfpacket = self.rf_socket.recv_pyobj(flags=zmq.NOBLOCK)
-                    print("Trying")
-                    sleep(0.001)
                 except zmq.Again:
+                    print("This is Again")
                     break
+
+            while True:
+                try:
+                    self.latest_rfpacket = self.rf_socket.recv_pyobj(flags=zmq.NOBLOCK)
+                except zmq.Again:
+                    print("This is Again2")
+                    break
+            print("new try")
             
             print(self.latest_rfpacket)
             if self.latest_rfpacket is not None:
