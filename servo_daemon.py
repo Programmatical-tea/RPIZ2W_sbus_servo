@@ -84,6 +84,7 @@ class Servo1:
         self.rf_socket = self.context.socket(zmq.SUB)
         self.rf_socket.connect("tcp://localhost:5555")
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")
+        print("Starting SBUS subscription...")
         self.latest_rfpacket = None
 
         self.running = True
@@ -100,6 +101,8 @@ class Servo1:
                 try:
                     self.latest_packet = self.socket.recv_pyobj(flags=zmq.NOBLOCK)
                     self.latest_rfpacket = self.rf_socket.recv_pyobj(flags=zmq.NOBLOCK)
+                    print("Trying")
+                    sleep(0.001)
                 except zmq.Again:
                     break
             
