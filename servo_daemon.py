@@ -81,7 +81,7 @@ class Servo1:
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")  # Subscribe to all messages
         self.latest_packet = (0,0)
 
-        self.rf_socket = self.context.socket(zmp.SUB)
+        self.rf_socket = self.context.socket(zmq.SUB)
         self.rf_socket.connect("tcp://localhost:5555")
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "")
         self.latest_rfpacket = None
