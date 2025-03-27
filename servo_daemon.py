@@ -147,7 +147,12 @@ class Servo1:
 
     def sin_values(self):
         angles = (2 * pi * i / self.period for i in range(self.period))
+        
         for a in cycle(angles):
+            if(self.A*sin(a)+self.B) >= 1:
+                yield 1
+            elif(self.A*sin(a)+self.B) <= -1:
+                yield -1
             yield self.A*sin(a)+self.B
 
 
