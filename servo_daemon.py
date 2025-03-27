@@ -154,7 +154,7 @@ class Servo1:
         angles = (2 * pi * i / self.period for i in range(self.period))
         
         for a in cycle(angles):
-            yield max(-0.99,min(self.A*sin(a)+self.B, 0.99))
+            yield max(-0.99,min(self.A*sin(a)-self.B, 0.99))
 
 
 
