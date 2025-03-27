@@ -120,11 +120,11 @@ class Servo1:
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
                 #print("Trasmit input")
                 if failsafe:
-                    print("Transmitter Connection LOST - Failsafe Activated!")
+                    #print("Transmitter Connection LOST - Failsafe Activated!")
                     self.A = 0
                     self.B = 0
                 elif frame_lost:
-                    print("Transmitter Connection unstable - Frame Lost detected!")
+                    #print("Transmitter Connection unstable - Frame Lost detected!")
                     self.A = 0
                     self.B = 0
                 else:
@@ -136,7 +136,7 @@ class Servo1:
                             if self.latest_packet is not None:
                                 self.A = self.latest_packet[0]
                                 self.B = self.latest_packet[1]
-                                print(f"updated value to {self.A}, {self.B}")
+                                #print(f"updated value to {self.A}, {self.B}")
                         else:
                             self.A = self.channels[0]/10
                             self.B = self.channels[1]/10
@@ -162,6 +162,13 @@ class Servo1:
 servo1 = Servo1()
 servo1.start()
 
-input("Stop?")
+try:
+    while True:
+        sleep(1)
+except KeyboardInterrupt:
+    servo1.stop()
+finally:
+    servo1.stop()
 
-servo1.stop()
+
+
