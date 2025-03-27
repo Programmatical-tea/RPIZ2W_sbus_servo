@@ -19,9 +19,10 @@ import threading
 SERVO_GPIO_PIN_1 = 12
 
 def map_2_range(value, old_min=200, old_max=1800, new_min=-10, new_max=10):
-    if value < old_min or value > old_max:
-        print(f"Value = {value}")
-        raise ValueError(f"Mapping Value is out of range, Value={value}")
+    if value < old_min:
+        return new_min
+    elif value > old_max:
+        return new_max
     new_value = int((value-old_min) * (new_max-new_min) / (old_max-old_min) + new_min)
     return new_value
 
