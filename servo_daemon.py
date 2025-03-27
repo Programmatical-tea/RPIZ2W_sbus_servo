@@ -124,7 +124,7 @@ class Servo1:
                     print("Transmitter Connection unstable - Frame Lost detected!")
                 else:
                     #print("Transmitter Connected")
-                    if self.channels[0] != 0:
+                    if channels[0] != 0:
                         self.channels = channels_2_dir(channels)
                         #print(self.channels[2])
                         if self.channels[2] > 0:
