@@ -115,6 +115,7 @@ class Servo1:
             #print(self.latest_rfpacket) # Not this.
 
             if self.latest_rfpacket is not None:
+                print(self.latest_rfpacket)
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
                 #print("Trasmit input")
                 if failsafe:
