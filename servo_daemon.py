@@ -115,7 +115,7 @@ class Servo1:
             #print(self.latest_rfpacket) # Not this.
 
             if self.latest_rfpacket is not None:
-                print(self.latest_rfpacket)
+                #print(self.latest_rfpacket)
                 channels, frame_lost, failsafe = parsePacket(self.latest_rfpacket)
                 #print("Trasmit input")
                 if failsafe:
@@ -124,17 +124,18 @@ class Servo1:
                     print("Transmitter Connection unstable - Frame Lost detected!")
                 else:
                     #print("Transmitter Connected")
-                    self.channels = channels_2_dir(channels)
-                    #print(self.channels[2])
-                    if self.channels[2] > 0:
-                        if self.latest_packet is not None:
-                            self.A = self.latest_packet[0]
-                            self.B = self.latest_packet[1]
-                            print(f"updated value to {self.A}, {self.B}")
-                    else:
-                        self.A = self.channels[0]/10
-                        self.B = self.channels[1]/10
-                        sleep(0.01)
+                    if self.channels[0] != 0:
+                        self.channels = channels_2_dir(channels)
+                        #print(self.channels[2])
+                        if self.channels[2] > 0:
+                            if self.latest_packet is not None:
+                                self.A = self.latest_packet[0]
+                                self.B = self.latest_packet[1]
+                                print(f"updated value to {self.A}, {self.B}")
+                        else:
+                            self.A = self.channels[0]/10
+                            self.B = self.channels[1]/10
+                            sleep(0.01)
 
     def start(self):
         self.thread.start()
