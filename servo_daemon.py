@@ -125,17 +125,17 @@ class Servo1:
                     pass
                     #print("Transmitter Connected")
 
-                self.channels = channels_2_dir(channels)
-                #print(self.channels[2])
-                if self.channels[2] > 0:
-                    if self.latest_packet is not None:
-                        self.A = self.latest_packet[0]
-                        self.B = self.latest_packet[1]
-                        print(f"updated value to {self.A}, {self.B}")
-                else:
-                    self.A = self.channels[0]/10
-                    self.B = self.channels[1]/10
-                    sleep(0.01)
+                    self.channels = channels_2_dir(channels)
+                    #print(self.channels[2])
+                    if self.channels[2] > 0:
+                        if self.latest_packet is not None:
+                            self.A = self.latest_packet[0]
+                            self.B = self.latest_packet[1]
+                            print(f"updated value to {self.A}, {self.B}")
+                    else:
+                        self.A = self.channels[0]/10
+                        self.B = self.channels[1]/10
+                        sleep(0.01)
 
     def start(self):
         self.thread.start()
