@@ -121,8 +121,12 @@ class Servo1:
                 #print("Trasmit input")
                 if failsafe:
                     print("Transmitter Connection LOST - Failsafe Activated!")
+                    self.A = 0
+                    self.B = 0
                 elif frame_lost:
                     print("Transmitter Connection unstable - Frame Lost detected!")
+                    self.A = 0
+                    self.B = 0
                 else:
                     #print("Transmitter Connected")
                     if channels[0] != 0:
