@@ -17,6 +17,7 @@ import zmq
 import threading
 
 SERVO_GPIO_PIN_1 = 12
+SERVO_GPIO_PIN_2 = 13
 
 def map_2_range(value, old_min=200, old_max=1800, new_min=-10, new_max=10):
     if value < old_min:
@@ -74,7 +75,12 @@ class Servo1:
         self.period = 120
         self.servo1 = AngularServo(SERVO_GPIO_PIN_1,min_angle=-40, max_angle=40, min_pulse_width=0.0009, max_pulse_width=0.0019)
         self.servo1.source_delay = 0.01
-        self.servo1.source = self.sin_values()
+        self.servo1.source = self.sin_values() # needs to be 180 different from 
+
+        self.servo2 = AngularServo(SERVO_GPIO_PIN_2, min_angle=-40, max_angle=40, min_pulse_width = 0.00105, max_pulse_width=0.0019)
+        self.servo2.source_delay = 0.01
+        self.servo2.source = self.sin_values_offset() # Will this synchronize well?
+
 
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.SUB)
@@ -156,6 +162,11 @@ class Servo1:
         for a in cycle(angles):
             yield max(-0.99,min(self.A*sin(a)-self.B, 0.99))
 
+    def sin_values_offset(self):
+        angles = (2 * pi * i / self.period for i in range(self.period))
+        
+        for a in cycle(angles):
+            yield max(-0.99,min(self.A*sin(a+pi)-self.B, 0.99))
 
 
 
